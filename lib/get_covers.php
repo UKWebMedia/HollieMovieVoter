@@ -7,7 +7,7 @@ $sql = "SELECT * FROM `movies`";
 $movies = $db->query($sql);
 
 foreach ($movies as $movie) {
-	if (!empty($movie['year'])) {
+	if (!empty($movie['imdb_rating'])) {
 		continue;
 	}
 
@@ -27,25 +27,29 @@ foreach ($movies as $movie) {
 		$base64 = null;
 	}
 
-	if (!isset($dataClass->Year) || $dataClass->Year === 'N/A') {
-		$dataClass->Year = null;
+	$sql = "UPDATE `movies` SET ";
+
+	if (isset($dataClass->Year) && $dataClass->Year !== 'N/A') {
+		$sql .= "year = '" . $dataClass->Year . "', ";
 	}
 
-	if (!isset($dataClass->Plot) || $dataClass->Plot === 'N/A') {
-		$dataClass->Plot = null;
+	if (isset($dataClass->Plot) && $dataClass->Plot !== 'N/A') {
+		$sql .= "plot = '" . $db->escape_string($dataClass->Plot) . "', ";
 	}
 
-	if (!isset($dataClass->imdbRating) || $dataClass->imdbRating === 'N/A') {
-		$dataClass->imdbRating = null;
+	if (isset($dataClass->imdbRating) && $dataClass->imdbRating !== 'N/A') {
+		$sql .= "imdb_rating = '" . $db->escape_string($dataClass->imdbRating) . "', ";
 	}
 
-	if (!isset($dataClass->Metascore) || $dataClass->Metascore === 'N/A') {
-		$dataClass->Metascore = null;
+	if (isset($dataClass->Metascore) && $dataClass->Metascore !== 'N/A') {
+		$sql .= "meta_rating = '" . $dataClass->Metascore . "', ";
 	}
 
-	$sql = "UPDATE `movies` SET cover = '" . $base64 . "', year = '" . $dataClass->Year . "', plot = '" . $db->escape_string($dataClass->Plot) . "', imdb_rating = '" . $dataClass->imdbRating . "', meta_rating = '" . $dataClass->Metascore . "' WHERE id = '" . $movie['id'] . "'";
+	$sql = rtrim($sql, ', ');
+	$where = " WHERE id = '" . $movie['id'] . "'";
+	$sql .= $where;
 	$db->query($sql);
-
+	var_dump($db->error);
 }
 
 echo "All done!";

@@ -1,7 +1,13 @@
 <?php
 include('lib/db.php');
 
-$sql = "SELECT * FROM `movies` ORDER BY upvotes DESC, `name` ASC";
+if (isset($_GET['by']) && $_GET['by'] === 'imdb') {
+	$sql = "SELECT * FROM `movies` ORDER BY imdb_rating DESC";
+} elseif (isset($_GET['by']) && $_GET['by'] === 'meta') {
+	$sql = "SELECT * FROM `movies` ORDER BY meta_rating DESC";
+} else {
+	$sql = "SELECT * FROM `movies` ORDER BY upvotes DESC, `name` ASC";
+}
 $movies = $db->query($sql);
 ?>
 
@@ -31,15 +37,29 @@ $movies = $db->query($sql);
 				<div class="col-md-12">
 					<div class="well">
 						<h1>The Hollie Movie Voter!</h1>
-						<p class="lead">Upvote your favourite films! <b>Only 20 votes per person</b>, choose wisely, votes are non-refundable!<br>Read the list before voting!</p>
+						<ul>
+							<li>Upvote your favourite films!</li>
+							<li><b>Only 20 votes</b> per person, choose wisely</li>
+							<li>Votes are non-refundable!</li>
+							<li><b>Read the list</b> before voting!</li>
+						</ul>
 						<p>Refresh the page to see how your scores have affected the table.</p>
 					</div>
 				</div>
+				
+				<div class="col-md-12">
+					<h2>Movie List</h2>
+					<nav>
+						<ul class="nav nav-tabs" role="tablist">
+							<li <?php echo ($_SERVER['QUERY_STRING'] === '')? 'class="active"' : '';?>><a href="/index.php">Order by votes</a></li>
+							<li <?php echo ($_SERVER['QUERY_STRING'] === 'by=imdb')? 'class="active"' : '';?>><a href="/index.php?by=imdb">Order by IMDB rating</a></li>
+							<li <?php echo ($_SERVER['QUERY_STRING'] === 'by=meta')? 'class="active"' : '';?>><a href="/index.php?by=meta">Order by Metascore</a></li>
+						</ul>
+					</nav> 
+				</div>		
 
 				<div class="col-md-12">
-					<h2>Movie list</h2>
-
-					<?php foreach ($movies as $movie):?>
+					<?php foreach ($movies as $k => $movie):?>
 						<div class="movie">
 							<div class="votes">
 								<span class='vote up' data-vote="up" data-id="<?php echo $movie['id'];?>"><span class='glyphicon glyphicon-arrow-up'></span></span>
@@ -48,17 +68,24 @@ $movies = $db->query($sql);
 							</div>
 							<div class="cover"><?php
 								if (!empty($movie['cover'])) {
-									echo "<img src='{$movie['cover']}'>";
+									echo "<img src='" . $movie['cover'] . "'>";
 								}
 							?></div>
 							<div class="film">
 								<h3><?php echo $movie['name'];?> (<?php echo $movie['year'];?>)</h3>
 								<p><?php echo $movie['plot'];?></p>
 							</div>
-							<div class="meta">
-								<p>imdb: <?php echo $movie['imdb_rating'];?>/10</p>
-								<p> metascore: <?php echo $movie['meta_rating'];?>/100</p>	
-							</div>
+							<?php if (!empty($movie['imdb_rating']) || !empty($movie['meta_rating'])): ?>
+								<div class="meta">
+									<?php if (!empty($movie['imdb_rating'])): ?>
+										<p>imdb: <?php echo $movie['imdb_rating'];?>/10</p>
+									<?php endif;
+									if (!empty($movie['meta_rating'])): ?>
+										<p> metascore: <?php echo $movie['meta_rating'];?>/100</p>
+									<?php endif;?>	
+								</div>
+							<?php endif;?>
+							<div class="place"><?php echo $k +1;?></div> 
 							<div class="clearfix"><!-- empty --></div>
 						</div>
 					<?php endforeach;?>
