@@ -7,6 +7,10 @@ $sql = "SELECT * FROM `movies`";
 $movies = $db->query($sql);
 
 foreach ($movies as $movie) {
+	if (!empty($movie['year'])) {
+		continue;
+	}
+
 	echo $movie['name'] . "<br>";
 
 	$data = file_get_contents($url . urlencode($movie['name']));

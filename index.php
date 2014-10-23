@@ -31,7 +31,7 @@ $movies = $db->query($sql);
 				<div class="col-md-12">
 					<div class="well">
 						<h1>The Hollie Movie Voter!</h1>
-						<p class="lead">Upvote your favourite films! <b>Only 20 votes per person</b>, choose wisely, votes are non-refundable!.</p>
+						<p class="lead">Upvote your favourite films! <b>Only 20 votes per person</b>, choose wisely, votes are non-refundable!<br>Read the list before voting!</p>
 						<p>Refresh the page to see how your scores have affected the table.</p>
 					</div>
 				</div>
