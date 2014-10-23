@@ -36,6 +36,7 @@ $movies = $db->query($sql);
 			<div class="row">
 				<div class="col-md-12">
 					<div class="well">
+						<img class="avatar" src="http://www.ukwm.co.uk/wp-content/themes/ukwm-corp/img/team/hvarndell.jpg">
 						<h1>The Hollie Movie Voter!</h1>
 						<ul>
 							<li>Upvote your favourite films!</li>
