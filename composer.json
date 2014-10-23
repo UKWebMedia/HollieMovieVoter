@@ -1,0 +1,14 @@
+{
+    "name": "davidyell/movie-voter",
+    "description": "A system to upvote and downvote movies",
+    "require": {
+        "components/html5-boilerplate": "~4.3",
+        "twbs/bootstrap": "~3.2"
+    },
+    "authors": [
+        {
+            "name": "David Yell",
+            "email": "neon1024@gmail.com"
+        }
+    ]
+}

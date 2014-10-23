@@ -1,0 +1,73 @@
+div.movie {
+    clear: both;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin: 10px;
+    padding: 5px 0;
+}
+div.movie div.cover {
+    width: 110px;
+    height: 160px;
+    float: left;
+}
+div.movie div.cover img {
+    width: 100px;
+}
+div.movie .film h3 {
+    margin-top: 0;
+}
+div.movie .meta {
+	float: right;
+	margin: 5px;
+	border: 1px dotted #ccc;
+	border-radius: 5px;
+	margin-right: 10px;
+	padding: 5px;
+}
+div.movie .meta p {
+	margin: 0;
+	font-size: 12px;
+}
+
+.votes {
+    width: 50px;
+    float: left;
+}
+.votes > span, .votes a > span {
+    width: 50px;
+    float: left;
+    font-size: 20px;
+    text-align: center;
+}
+.votes span.vote {
+    cursor: pointer;
+}
+.votes a {
+    color: #595959;
+}
+
+.questions.view .question {
+    min-height: 150px;
+}
+
+.answer {
+    padding-top: 10px;
+    border-top: 1px solid #ccc;
+}
+
+.comments {
+    margin-left: 50px;
+}
+.comments .comment {
+    margin: 10px 0;
+    border-top: 1px dotted #ccc;
+}
+.comments .comment p {
+    margin: 3px 0 0 20px;
+    font-size: 13px;
+}
+
+#loading { display: block; width: 100px; height: 100px; position: fixed; top: 400px; left: 50%; margin-left: -50px; background: #000; border-radius: 5px; line-height: 120px; text-align: center; opacity: 0.75; z-index: 9999; }
+#loading img {
+    vertical-align: baseline;
+}
