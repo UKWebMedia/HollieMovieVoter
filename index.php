@@ -42,11 +42,11 @@ $votes = $db->query($sql);
 						<img class="avatar" src="http://www.ukwm.co.uk/wp-content/themes/ukwm-corp/img/team/hvarndell.jpg">
 						<h1>The Hollie Movie Voter!</h1>
 						<ul>
-							<li><span class="glyphicon glyphicon-arrow-up"></span> Upvote your favourite films</li>
-							<li><span class="glyphicon glyphicon-stats"></span> <b>Only 20 votes</b> per person, choose wisely</li>
-							<li><span class="glyphicon glyphicon-refresh"></span> Votes are recyclable</li>
 							<li><span class="glyphicon glyphicon-eye-open"></span> <b>Read the list</b> before voting!</li>
 							<li><span class="glyphicon glyphicon-search"></span> To find a film use your browsers search</li>
+							<li><span class="glyphicon glyphicon-arrow-up"></span> Upvote your favourite films</li>
+							<li><span class="glyphicon glyphicon-refresh"></span> Votes are recyclable</li>
+							<li><span class="glyphicon glyphicon-stats"></span> <b>Only 20 votes</b> per person, choose wisely</li>
 						</ul>
 						<p>Refresh the page to see how your scores have affected the table.</p>
 					</div>
@@ -72,6 +72,9 @@ $votes = $db->query($sql);
 								break;
 							}
 						}
+						if ($movie['seen'] == 1) {
+							$class .= " seen ";
+						}
 						?>
 						<div class="movie <?php echo $class;?>">
 							<div class="votes">
@@ -90,6 +93,10 @@ $votes = $db->query($sql);
 							<div class="film">
 								<h3><?php echo $movie['name'];?> (<?php echo $movie['year'];?>)</h3>
 								<p><?php echo $movie['plot'];?></p>
+
+								<?php if ($movie['seen'] == 1): ?>
+									<p><span class="glyphicon glyphicon-eye-open"></span> Already seen</p>
+								<?php endif;?>
 							</div>
 							<?php if (!empty($movie['imdb_rating']) || !empty($movie['meta_rating'])): ?>
 								<div class="meta">
