@@ -73,17 +73,21 @@ $votes = $db->query($sql);
 							}
 						}
 						if ($movie['seen'] == 1) {
-							$class .= " seen ";
+//							$class .= " seen ";
 						}
 						?>
 						<div class="movie <?php echo $class;?>">
 							<div class="votes">
-								<span class='vote up' data-vote="up" data-id="<?php echo $movie['id'];?>"><span class='glyphicon glyphicon-arrow-up'></span></span>
-								<span class="votes"><?php echo $movie['upvotes'] - $movie['downvotes'];?></span>
-								<!-- <span class='vote down' data-vote="down" data-id="<?php echo $movie['id'];?>"><span class='glyphicon glyphicon-arrow-down'></span></span> -->
-								<?php if ($class === 'voted'): ?>
-									<span class="vote recycle" title="Recycle this vote" data-vote="recycle" data-id="<?php echo $movie['id'];?>"><span class="glyphicon glyphicon-refresh"></span></span>
-								<?php endif; ?>
+								<?php if ($movie['seen'] != 1): ?>
+									<span class='vote up' data-vote="up" data-id="<?php echo $movie['id'];?>"><span class='glyphicon glyphicon-arrow-up'></span></span>
+									<span class="votes"><?php echo $movie['upvotes'] - $movie['downvotes'];?></span>
+									<!-- <span class='vote down' data-vote="down" data-id="<?php echo $movie['id'];?>"><span class='glyphicon glyphicon-arrow-down'></span></span> -->
+									<?php if ($class === 'voted'): ?>
+										<span class="vote recycle" title="Recycle this vote" data-vote="recycle" data-id="<?php echo $movie['id'];?>"><span class="glyphicon glyphicon-refresh"></span></span>
+									<?php endif; ?>
+								<?php else:?>
+									<span class="votes"><span class="glyphicon glyphicon-eye-open"></span></span>
+								<?php endif;?>
 							</div>
 							<div class="cover"><?php
 								if (!empty($movie['cover'])) {

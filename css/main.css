@@ -72,6 +72,9 @@ div.movie.seen {
     border-color: #888;
     color: #888;
 }
+div.movie:nth-child(20) {
+    margin-bottom: 50px;
+}
 
 div.movie div.cover {
     width: 110px;
