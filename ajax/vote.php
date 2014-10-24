@@ -3,11 +3,23 @@ include('../lib/db.php');
 
 if (isset($_POST) && !empty($_POST)) {
 
+	// User wants to recycle a vote
+	if ($_POST['vote'] === 'recycle') {
+		$sql = "DELETE FROM `votes` WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' AND movie_id = '" . (int)$_POST['id'] . "'";
+		$db->query($sql);
+
+		$sql = "UPDATE `movies` SET upvotes = upvotes - 1 WHERE id = '" . (int)$_POST['id'] . "'";
+		$db->query($sql);
+
+		echo json_encode(['message' => 'Your vote has been recycled.', 'type' => $_POST['vote']]);
+		exit;
+	}
+
 	// Check how many votes the user has left
 	$sql = "SELECT * FROM `votes` WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "'";
 	$db->query($sql);
 	if ($db->affected_rows >= 20) {
-		echo json_encode('Too many votes!');
+		echo json_encode(['message' => 'You\'ve used up all your votes. Recycle some votes.', 'type' => $_POST['vote']]);
 		exit;
 	}
 
@@ -15,7 +27,7 @@ if (isset($_POST) && !empty($_POST)) {
 	$sql = "SELECT * FROM `votes` WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "' AND movie_id = " . (int)$_POST['id'];
 	$db->query($sql);
 	if ($db->affected_rows > 0) {
-		echo json_encode('Already voted');
+		echo json_encode(['message' => 'You have already voted for this movie.', 'type' => $_POST['vote']]);
 		exit;
 	}
 

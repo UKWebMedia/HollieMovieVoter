@@ -9,20 +9,30 @@ $(function () {
     });
 
 // Voting ajax
-    $('div.votes span.vote').click(function (e) {
+    $('div.votes').on('click', 'span.vote', function (e) {
         e.preventDefault();
 
         var item = $(this);
 
         jQuery.post('ajax/vote.php', $(item).data(), function (data, status) {
             if (status === 'success') {
-                if (typeof data === 'object') {
-                    $(item).siblings('span.votes').html(data.upvotes - data.downvotes);
+                if (data.hasOwnProperty('message')) {
+                    if (data.type === 'recycle') {
+                        $(item).parents('div.movie').removeClass('voted');
+                        var votes = parseInt($(item).siblings('span.votes').html()) - 1;
+                        $(item).siblings('span.votes').html(votes);
+                        $(item).remove();
+                    } else {
+                        $('#too-many-votes div.modal-body').html("<p>" + data.message + "</p>");
+                        $('#too-many-votes').modal();
+                    }
                 } else {
-                    $('#too-many-votes').modal();
+                    $(item).siblings('span.votes').html(data.upvotes - data.downvotes);
+                    $(item).parents('div.movie').addClass('voted');
+                    $(item).parents('div.votes').append('<span class="vote recycle" title="Recycle this vote" data-vote="recycle" data-id="' + $(item).data('id') + '"><span class="glyphicon glyphicon-refresh"></span></span>');
                 }
             }
         }, 'json');
-    });
+    })
 
 });

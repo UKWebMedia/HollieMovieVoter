@@ -9,6 +9,9 @@ if (isset($_GET['by']) && $_GET['by'] === 'imdb') {
 	$sql = "SELECT * FROM `movies` ORDER BY upvotes DESC, `name` ASC";
 }
 $movies = $db->query($sql);
+
+$sql = "SELECT * FROM `votes` WHERE ip = '" . $_SERVER['REMOTE_ADDR'] . "'";
+$votes = $db->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -39,10 +42,11 @@ $movies = $db->query($sql);
 						<img class="avatar" src="http://www.ukwm.co.uk/wp-content/themes/ukwm-corp/img/team/hvarndell.jpg">
 						<h1>The Hollie Movie Voter!</h1>
 						<ul>
-							<li>Upvote your favourite films!</li>
-							<li><b>Only 20 votes</b> per person, choose wisely</li>
-							<li>Votes are non-refundable!</li>
-							<li><b>Read the list</b> before voting!</li>
+							<li><span class="glyphicon glyphicon-arrow-up"></span> Upvote your favourite films</li>
+							<li><span class="glyphicon glyphicon-stats"></span> <b>Only 20 votes</b> per person, choose wisely</li>
+							<li><span class="glyphicon glyphicon-refresh"></span> Votes are recyclable</li>
+							<li><span class="glyphicon glyphicon-eye-open"></span> <b>Read the list</b> before voting!</li>
+							<li><span class="glyphicon glyphicon-search"></span> To find a film use your browsers search</li>
 						</ul>
 						<p>Refresh the page to see how your scores have affected the table.</p>
 					</div>
@@ -60,12 +64,23 @@ $movies = $db->query($sql);
 				</div>		
 
 				<div class="col-md-12">
-					<?php foreach ($movies as $k => $movie):?>
-						<div class="movie">
+					<?php foreach ($movies as $k => $movie):
+						$class = null;
+						foreach ($votes as $vote) {
+							if ($vote['movie_id'] === $movie['id']) {
+								$class = 'voted';
+								break;
+							}
+						}
+						?>
+						<div class="movie <?php echo $class;?>">
 							<div class="votes">
 								<span class='vote up' data-vote="up" data-id="<?php echo $movie['id'];?>"><span class='glyphicon glyphicon-arrow-up'></span></span>
 								<span class="votes"><?php echo $movie['upvotes'] - $movie['downvotes'];?></span>
 								<!-- <span class='vote down' data-vote="down" data-id="<?php echo $movie['id'];?>"><span class='glyphicon glyphicon-arrow-down'></span></span> -->
+								<?php if ($class === 'voted'): ?>
+									<span class="vote recycle" title="Recycle this vote" data-vote="recycle" data-id="<?php echo $movie['id'];?>"><span class="glyphicon glyphicon-refresh"></span></span>
+								<?php endif; ?>
 							</div>
 							<div class="cover"><?php
 								if (!empty($movie['cover'])) {
@@ -101,12 +116,11 @@ $movies = $db->query($sql);
 		<div id="too-many-votes" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="TooManyVotes" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-						<h4 class="modal-title">Sorry!</h4>
-					</div>
 					<div class="modal-body">
 						<p>You've used up all your votes, or you are trying to vote on the same movie twice.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					</div>
 				</div>
 			</div>
