@@ -29,6 +29,13 @@ p {
     margin-right: 5px;
     font-size: 16px;
 }
+#votes-used-wrapper.scroll-to-fixed-fixed {
+    padding: 10px;
+    background-color: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
 
 .avatar {
 	width: 180px;

@@ -49,6 +49,7 @@ $votes = $db->query($sql);
 							<li><span class="glyphicon glyphicon-stats"></span> <b>Only 20 votes</b> per person, choose wisely</li>
 						</ul>
 						<p>Refresh the page to see how your scores have affected the table.</p>
+						<p id="votes-used-wrapper">Votes used <span class="badge" id="votes-used"><?php echo $votes->num_rows;?></span></p>
 					</div>
 				</div>
 				
@@ -140,6 +141,7 @@ $votes = $db->query($sql);
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script>window.jQuery || document.write('<script src="vendor/components/jquery/jquery-1.10.2.min.js"><\/script>')</script>
 		<script src="vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
+		<script src="js/jquery-scrolltofixed-min.js"></script>
 		<script src="js/main.js"></script>
 	</body>
 </html>
